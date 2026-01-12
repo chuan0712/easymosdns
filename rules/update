@@ -1,20 +1,21 @@
 #!/bin/bash
 # Powered by Apad.pro
 # https://apad.pro/easymosdns
-#
+
 mosdns_working_dir="/etc/mosdns"
+proxy="http://127.0.0.1:7890"
 
 mkdir -p /tmp/easymosdns
 
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/md5_hash_list.txt > /tmp/easymosdns/md5_hash_list
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/md5_hash_list.txt > /tmp/easymosdns/md5_hash_list
 grep -q "txt" /tmp/easymosdns/md5_hash_list || { echo "[FAIL] Download MD5 reference file md5_hash_list failed"; rm -rf /tmp/easymosdns; exit 1; }
 
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/china_domain_list.txt > /tmp/easymosdns/china_domain_list.txt
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/gfw_domain_list.txt > /tmp/easymosdns/gfw_domain_list.txt
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/cdn_domain_list.txt > /tmp/easymosdns/cdn_domain_list.txt
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/china_ip_list.txt > /tmp/easymosdns/china_ip_list.txt
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/gfw_ip_list.txt > /tmp/easymosdns/gfw_ip_list.txt
-curl -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/ad_domain_list.txt > /tmp/easymosdns/ad_domain_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/china_domain_list.txt > /tmp/easymosdns/china_domain_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/gfw_domain_list.txt > /tmp/easymosdns/gfw_domain_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/cdn_domain_list.txt > /tmp/easymosdns/cdn_domain_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/china_ip_list.txt > /tmp/easymosdns/china_ip_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/gfw_ip_list.txt > /tmp/easymosdns/gfw_ip_list.txt
+curl -x "$proxy" -L https://raw.githubusercontent.com/pmkol/easymosdns/rules/ad_domain_list.txt > /tmp/easymosdns/ad_domain_list.txt
 
 for rule in /tmp/easymosdns/*.txt; do
     md5=$(md5sum "$rule" | cut -d ' ' -f1)
