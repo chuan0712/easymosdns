@@ -23,6 +23,9 @@ data_providers:
   - tag: adlist
     file: ./rules/ad_domain_list.txt
     auto_reload: true
+  - tag: adlist_extend
+    file: ./rules/ad_domain_list_extend.txt
+    auto_reload: true
   - tag: ecscn
     file: ./ecs_cn_domain.txt
     auto_reload: true
@@ -203,6 +206,7 @@ plugins:
     args:
       domain:
         - "provider:adlist"
+        - "provider:adlist_extend"
 
   # 匹配强制本地解析域名的插件
   - tag: query_is_cn_domain
@@ -383,13 +387,11 @@ servers:
     listeners:
       - protocol: udp
         addr: "0.0.0.0:53"
-      - protocol: tcp
-        addr: "0.0.0.0:53"
-      #- protocol: http
-      #  addr: "127.0.0.1:9053"
-      #  url_path: "/dns-query"
-      #  get_user_ip_from_header: "X-Forwarded-For"
-      #- protocol: tls             
+      - protocol: http
+        addr: "0.0.0.0:9053"
+        url_path: "/api-query"
+        get_user_ip_from_header: "X-Forwarded-For"
+      #- protocol: tls
       #  addr: "0.0.0.0:853"
       #  cert: "/etc/mosdns/yourdomain.cert"  # TLS 所需证书文件。
       #  key: "/etc/mosdns/yourdomain.key"    # TLS 所需密钥文件。
